@@ -1,0 +1,14 @@
+ <svg
+          className="cursor-pointer"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19.58,4.16,4.13,10a.21.21,0,0,0,0,.38l6.61,2.83a.2.2,0,0,1,.11.11l2.83,6.61a.21.21,0,0,0,.38,0L19.84,4.42A.2.2,0,0,0,19.58,4.16Z"
+            fill="white"
+            fillOpacity="0.8"
+          />
+        </svg>

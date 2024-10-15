@@ -245,12 +245,12 @@ const Features = () => {
             <h2 className="text-5xl lg:text-7xl font-semibold">graph showcase.</h2>
           </div>
 
-          <div className="flex-center flex-col sm:px-10">
+          <div className="flex-center flex-col md:flex-row sm:px-10">
             <div id="chartSection" className="flex flex-col w-full relative">
               <div className="feature-video-container flex justify-between">
 
                 {/* 첫 번째 차트: 스트림 및 에너지 */}
-                <div className="chart-container" style={{ width: '30%', height: '350px' }}>
+                <div className="chart-container" style={{ height: '350px' }}>
                   <ApexCharts
                     options={barChartOptions}
                     series={[
@@ -263,7 +263,7 @@ const Features = () => {
                 </div>
 
                 {/* 두 번째 차트: 스트림 및 BPM */}
-                <div className="chart-container" style={{ width: '30%', height: '350px' }}>
+                <div className="chart-container" style={{ height: '350px' }}>
                   <ApexCharts
                     options={lineChartOptions}
                     series={[
@@ -276,7 +276,7 @@ const Features = () => {
                 </div>
 
                 {/* 세 번째 차트: BPM 및 감정 상태 (Valence) */}
-                <div className="chart-container" style={{ width: '30%', height: '350px' }}>
+                <div className="chart-container" style={{ height: '350px' }}>
                   <ApexCharts
                     options={areaChartOptions}
                     series={[
@@ -290,7 +290,8 @@ const Features = () => {
               </div>
 
               <div className="feature-text-container">
-                <div className="flex-1 flex-center">
+
+                <div className="flex-1 flex-center text-pretty">
                   <p className="feature-text g_text">
                     Customized interactive charts using {' '}
                     <span className="text-white">
@@ -300,15 +301,16 @@ const Features = () => {
                   </p>
                 </div>
 
-                <div className="flex-1 flex-center">
+                <div className="flex-1 flex-center text-pretty text-right">
                   <p className="feature-text g_text">
-                    Overall, the goal was to balance aesthetics with usability, {' '}
+                    The goal was to balance aesthetics and usability, {' '}
                     <span className="text-white">
-                    ensuring that the data was both clear and engaging {' '}
+                    ensuring the data was clear and engaging, {' '}
                     </span>
-                    while eliminating distracting or non-essential interactions.
+                    while removing unnecessary interactions.
                   </p>
                 </div>
+
               </div>
             </div>
           </div>

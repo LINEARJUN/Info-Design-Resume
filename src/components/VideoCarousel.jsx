@@ -23,6 +23,22 @@ const VideoCarousel = () => {
   const [loadedData, setLoadedData] = useState([]);
   const { isEnd, isLastVideo, startPlay, videoId, isPlaying } = video;
 
+  const resizeHandler = () => {
+    // 화면 크기에 맞춰 비디오 요소들의 크기와 배치 변경
+    const screenWidth = window.innerWidth;
+    const videoContainer = document.querySelectorAll('.video-carousel_container');
+
+    videoContainer.forEach((container) => {
+      if (screenWidth < 640) {
+        container.style.height = '50vw'; // 모바일 디바이스 - 비율에 맞춘 비디오 높이
+      } else if (screenWidth < 1024) {
+        container.style.height = '40vw'; // 태블릿 디바이스
+      } else {
+        container.style.height = 'auto'; // 데스크탑에서는 높이 대신 종횡비를 유지
+      }
+    });
+  };
+
   useGSAP(() => {
     gsap.to("#slider", {
       transform: `translateX(${-100 * videoId}%)`,
@@ -44,6 +60,12 @@ const VideoCarousel = () => {
       },
     });
   }, [videoId]);
+
+  useEffect(() => {
+    resizeHandler(); // 처음 로드 시 크기 설정
+    window.addEventListener('resize', resizeHandler); // 윈도우 리사이즈 시 크기 변경 처리
+    return () => window.removeEventListener('resize', resizeHandler); // cleanup
+  }, []);
 
   useEffect(() => {
     let currentProgress = 0;
@@ -91,8 +113,7 @@ const VideoCarousel = () => {
 
       const animUpdate = () => {
         anim.progress(
-          videoRef.current[videoId].currentTime /
-            hightlightsSlides[videoId].videoDuration
+          videoRef.current[videoId].currentTime / hightlightsSlides[videoId].videoDuration
         );
       };
 
@@ -102,7 +123,6 @@ const VideoCarousel = () => {
         gsap.ticker.remove(animUpdate);
       }
 
-      // Clean up ticker on unmount or videoId change
       return () => {
         gsap.ticker.remove(animUpdate);
       };
@@ -153,30 +173,34 @@ const VideoCarousel = () => {
       <div className="flex items-center">
         {hightlightsSlides.map((list, i) => (
           <div key={list.id} id="slider" className="sm:pr-20 pr-10">
-            <div className="video-carousel_container">
-              <div className="w-full h-full flex-center rounded-3xl overflow-hidden bg-black">
-                <video
-                  id="video"
-                  playsInline={true}
-                  className={`pointer-events-none`}
-                  preload="auto"
-                  muted
-                  ref={(el) => (videoRef.current[i] = el)}
-                  onEnded={() =>
-                    i !== 3
-                      ? handleProcess("video-end", i)
-                      : handleProcess("video-last")
-                  }
-                  onPlay={() =>
-                    setVideo((pre) => ({ ...pre, isPlaying: true }))
-                  }
-                  onLoadedMetadata={(e) => handleLoadedMetaData(i, e)}
-                >
-                  <source src={list.video} type="video/mp4" />
-                </video>
-              </div>
+            <div
+              className="video-carousel_container w-full flex-center rounded-3xl overflow-hidden bg-black"
+              style={{
+                aspectRatio: "16/9",
+                maxWidth: "1024px", // 비디오의 최대 가로 크기 설정
+                maxHeight: "576px", // 비디오의 최대 세로 크기 설정
+                margin: "0 auto", // 중앙 정렬
+              }}
+            >
+              <video
+                id="video"
+                playsInline={true}
+                className="pointer-events-none w-full h-full object-cover"
+                preload="auto"
+                muted
+                ref={(el) => (videoRef.current[i] = el)}
+                onEnded={() =>
+                  i !== 3
+                    ? handleProcess("video-end", i)
+                    : handleProcess("video-last")
+                }
+                onPlay={() => setVideo((pre) => ({ ...pre, isPlaying: true }))}
+                onLoadedMetadata={(e) => handleLoadedMetaData(i, e)}
+              >
+                <source src={list.video} type="video/mp4" />
+              </video>
 
-              <div className="absolute top-12 left-[5%] z-10">
+              <div className="absolute top-8 left-[5%] z-10">
                 {list.textLists.map((text, i) => (
                   <p key={i} className="md:text-2xl text-xl font-bold">
                     {text}

@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useFBX } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 
-const CharacterModel = () => {
+const CharacterModel = ({ setLoading }) => {
   const fbx = useFBX('./models/character.fbx'); // Path to your FBX model
   const mixer = useRef();
 
@@ -14,7 +14,9 @@ const CharacterModel = () => {
       const action = mixer.current.clipAction(fbx.animations[0]);
       action.play();
     }
-  }, [fbx]);
+    // 모델 로딩이 완료되면 로딩 상태를 false로 변경
+    setLoading(false);
+  }, [fbx, setLoading]);
 
   useFrame((state, delta) => {
     mixer.current?.update(delta);
@@ -32,6 +34,8 @@ const CharacterModel = () => {
 };
 
 const Model = () => {
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
   useEffect(() => {
     gsap.to('#heading', { y: 0, opacity: 1 });
   }, []);
@@ -43,6 +47,12 @@ const Model = () => {
 
         <div className="flex flex-col items-center mt-5">
           <div className="w-full h-[60vh] overflow-hidden relative">
+            {loading && (
+              <div className="absolute inset-0 flex justify-center items-center z-10">
+                <span className="text-white text-lg">loading something special...</span>
+              </div>
+            )}
+
             <Canvas
               className="w-full h-full"
               style={{
@@ -62,7 +72,7 @@ const Model = () => {
                 position={[5, 5, 5]} 
                 castShadow
               />
-              <CharacterModel />  {/* The 3D model component */}
+              <CharacterModel setLoading={setLoading} />  {/* The 3D model component */}
               <OrbitControls enableZoom={false} /> {/* Optional controls for model rotation */}
             </Canvas>
 
@@ -84,7 +94,7 @@ const Model = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5L12 12" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 12H9.75" />
               </svg>
-              <span>Use your mouse to orbit around the model</span>
+              <span>Use your mouse to orbit around.</span>
             </div>
           </div>
         </div>

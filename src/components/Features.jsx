@@ -242,12 +242,12 @@ const Features = () => {
         <div className="flex flex-col justify-center items-center overflow-hidden">
           <div className="mb-24">
             <h2 className="text-5xl lg:text-7xl font-semibold">simple.</h2>
-            <h2 className="text-5xl lg:text-7xl font-semibold">graph showcase.</h2>
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-semibold mt-2">graph showcase.</h2>
           </div>
 
           <div className="flex-center flex-col md:flex-row sm:px-10">
             <div id="chartSection" className="flex flex-col w-full relative">
-              <div className="feature-video-container flex justify-between">
+              <div className="feature-video-container lg:flex justify-between">
 
                 {/* 첫 번째 차트: 스트림 및 에너지 */}
                 <div className="chart-container" style={{ height: '350px' }}>
